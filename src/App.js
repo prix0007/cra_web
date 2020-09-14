@@ -1,25 +1,62 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import Navbar from "./components/Navbar";
+import Footer from './components/Footer';
+import Home from './pages/home';
+import Council from './pages/council';
+import Highlights from './pages/highlights';
+import Speakout from './pages/speakout';
+import Work from './pages/work';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from "react-router-dom";
+
+
+import { createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
+import themeConfig from './assets/theme/themeConfig.js'
+
+const theme = createMuiTheme(themeConfig);
+
 function App() {
+    const [pageState, setPageState] = React.useState({
+        council: 0,
+        work: 0
+    });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+          <ThemeProvider theme={theme}>
+              <Navbar
+                  pageState={pageState}
+                  setPageState={setPageState}
+              />
+              <Switch>
+                  <Route path="/work">
+                      <Work
+                        pageState={pageState}
+                      />
+                  </Route>
+                  <Route path="/council">
+                    <Council
+                        pageState={pageState}
+                    />
+                  </Route>
+                  <Route path="/highlights">
+                      <Highlights />
+                  </Route>
+                  <Route path="/speakout">
+                      <Speakout />
+                  </Route>
+                  <Route path="/">
+                      <Home />
+                  </Route>
+              </Switch>
+              <Footer />
+          </ThemeProvider>
+      </Router>
   );
 }
 
